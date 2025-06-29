@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="13.0.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.9.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Fiap.Hackatoon.Product.Consumer.Domain\Fiap.Hackatoon.Product.Consumer.Domain.csproj" />
+    <ProjectReference Include="..\Fiap.Hackatoon.Product.Consumer.Infrastructure\Fiap.Hackatoon.Product.Consumer.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>

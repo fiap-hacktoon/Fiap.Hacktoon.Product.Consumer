@@ -1,0 +1,6 @@
+{
+    "dotnet.server.useOmnisharp": true,
+    "cSpell.words": [
+        "Newtonsoft"
+    ]
+}
