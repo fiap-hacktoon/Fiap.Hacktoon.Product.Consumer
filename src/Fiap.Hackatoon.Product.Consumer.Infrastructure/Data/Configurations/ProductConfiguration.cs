@@ -17,8 +17,8 @@ public class ContactConfiguration : BaseEntityConfiguration<DO.Product>
         builder.Property(p => p.StockQuantity).IsRequired();
         builder.Property(p => p.Status).IsRequired();
 
-        // builder.HasOne(p => p.Type)
-        //     .WithMany(t => t.Products)
-        //     .HasForeignKey(p => p.TypeId);
+        builder.HasOne(p => p.Type)
+            .WithMany(t => t.Products)
+            .HasForeignKey(p => p.TypeId);
     }
 }

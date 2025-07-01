@@ -29,8 +29,8 @@ public class ProductApplicationService(IProductService productService, IMapper m
                 break;
 
             case AppConstants.Routes.RabbitMQ.ProductDelete:
-                var contactRemoved = JsonSerializer.Deserialize<MSG.Identifier>(message);
-                await Remove(contactRemoved.Id);
+                var productRemoved = JsonSerializer.Deserialize<MSG.Identifier>(message);
+                await Remove(productRemoved.Id);
                 break;
         }
     }
@@ -41,7 +41,7 @@ public class ProductApplicationService(IProductService productService, IMapper m
         if (product != null)
             await Update(model);
 
-        var entity = _mapper.Map<DO.Product>(product);
+        var entity = model.ToEntity(_mapper) as DO.Product;
         entity.PrepareToInsert();
 
         var result = await _productService.Add(entity);

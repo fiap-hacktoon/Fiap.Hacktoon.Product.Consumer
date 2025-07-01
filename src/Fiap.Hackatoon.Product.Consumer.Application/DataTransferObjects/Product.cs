@@ -10,5 +10,5 @@ public record Product(
     decimal Price,
     int StockQuantity,
     int Status,
-    Guid ProductTypeId
+    ProductType Type
 );
