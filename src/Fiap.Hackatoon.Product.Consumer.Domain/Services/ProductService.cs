@@ -7,21 +7,18 @@ namespace Fiap.Hackatoon.Product.Consumer.Domain.Services;
 
 public class ProductService(IProductRepository productRepository) : BaseService<DO.Product>(productRepository), IProductService
 {
-    private readonly IProductRepository _contactRepository = productRepository;
+    private readonly IProductRepository _productRepository = productRepository;
 
     public async Task<DO.Product> GetById(Guid id, bool include, bool tracking)
     {
-        var entity = await _contactRepository.GetById(id, include, tracking);
-
-        if (entity == null)
-            throw new ValidationException("O contato não existe.");
+        var entity = await _productRepository.GetById(id, include, tracking);
 
         return entity;
     }
 
     public async Task Remove(Guid id)
     {
-        var entity = await _contactRepository.GetById(id, false, true);
+        var entity = await _productRepository.GetById(id, false, true);
         if (entity == null)
             throw new Exception("O contato não existe.");
 
@@ -32,8 +29,6 @@ public class ProductService(IProductRepository productRepository) : BaseService<
     {
         if (entity == null)
             throw new ArgumentNullException(nameof(entity), "O contato não pode ser nulo.");
-
-        entity.PrepareToInsert();
 
         return await base.Add(entity);
     }

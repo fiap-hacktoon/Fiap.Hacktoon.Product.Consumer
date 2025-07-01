@@ -9,9 +9,13 @@ using DO = Fiap.Hackatoon.Product.Consumer.Domain.Entities;
 
 namespace Fiap.Hackatoon.Product.Consumer.Application.Services;
 
-public class ProductApplicationService(IProductService productService, IMapper mapper) : IProductApplicationService
+public class ProductApplicationService(
+    IProductService productService,
+    IProductTypeService productTypeService,
+    IMapper mapper) : IProductApplicationService
 {
     private readonly IProductService _productService = productService;
+    private readonly IProductTypeService _productTypeService = productTypeService;
     private readonly IMapper _mapper = mapper;
 
     public async Task Consumer(string message, string rountingKey)
@@ -42,7 +46,6 @@ public class ProductApplicationService(IProductService productService, IMapper m
             await Update(model);
 
         var entity = model.ToEntity(_mapper) as DO.Product;
-        entity.PrepareToInsert();
 
         var result = await _productService.Add(entity);
         return _mapper.Map<DTO.Product>(result);

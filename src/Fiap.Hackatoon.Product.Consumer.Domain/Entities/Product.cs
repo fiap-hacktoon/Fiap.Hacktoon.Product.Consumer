@@ -12,4 +12,10 @@ public class Product : BaseEntity
     public int Status { get; set; }
 
     public Product() : base() { }
+
+    public void SetType(ProductType type)
+    {
+        Type = type;
+        TypeId = type.Id;
+    }
 }

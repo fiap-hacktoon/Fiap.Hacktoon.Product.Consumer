@@ -12,7 +12,6 @@ namespace Fiap.Hackatoon.Product.Consumer.Domain.Services
 
         public virtual async Task<T> Add(T entity)
         {
-            entity.PrepareToInsert();
             return await _repository.Add(entity);
         }
 
