@@ -11,11 +11,9 @@ namespace Fiap.Hackatoon.Product.Consumer.Application.Services;
 
 public class ProductApplicationService(
     IProductService productService,
-    IProductTypeService productTypeService,
     IMapper mapper) : IProductApplicationService
 {
     private readonly IProductService _productService = productService;
-    private readonly IProductTypeService _productTypeService = productTypeService;
     private readonly IMapper _mapper = mapper;
 
     public async Task Consumer(string message, string rountingKey)
