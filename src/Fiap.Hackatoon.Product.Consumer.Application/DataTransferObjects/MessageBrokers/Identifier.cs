@@ -1,3 +1,11 @@
+using System.Text.Json.Serialization;
+
 namespace Fiap.Hackatoon.Product.Consumer.Application.DataTransferObjects.MessageBrokers;
 
-public record Identifier(Guid Id);
+public class Identifier
+{
+    [JsonPropertyName("id")]
+    public Guid? Id { get; set; }
+
+    public Identifier() { }
+}

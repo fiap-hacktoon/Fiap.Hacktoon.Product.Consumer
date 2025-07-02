@@ -6,7 +6,7 @@ namespace Fiap.Hackatoon.Product.Consumer.Application.DataTransferObjects.Messag
 
 public class Product
 {
-    public Guid Id { get; set; }
+    public Guid? Id { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
     public bool Removed { get; set; }

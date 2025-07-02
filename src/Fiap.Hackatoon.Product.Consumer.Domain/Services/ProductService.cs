@@ -30,6 +30,8 @@ public class ProductService(IProductRepository productRepository) : BaseService<
         if (entity == null)
             throw new ArgumentNullException(nameof(entity), "O contato não pode ser nulo.");
 
+        entity.PrepareToInsert();
+
         return await base.Add(entity);
     }
 

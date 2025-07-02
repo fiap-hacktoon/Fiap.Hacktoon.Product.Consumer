@@ -20,7 +20,7 @@ public class ProductApplicationService(
 
     public async Task Consumer(string message, string rountingKey)
     {
-        switch(rountingKey)
+        switch (rountingKey)
         {
             case AppConstants.Routes.RabbitMQ.ProductInsert:
                 var productInserted = JsonSerializer.Deserialize<MSG.Product>(message);
@@ -34,16 +34,19 @@ public class ProductApplicationService(
 
             case AppConstants.Routes.RabbitMQ.ProductDelete:
                 var productRemoved = JsonSerializer.Deserialize<MSG.Identifier>(message);
-                await Remove(productRemoved.Id);
+                await Remove(productRemoved.Id.Value);
                 break;
         }
     }
 
     public async Task<DTO.Product> Insert(MSG.Product model)
     {
-        var product = await _productService.GetById(model.Id, include: false, tracking: false);
-        if (product != null)
-            await Update(model);
+        if (model.Id.HasValue)
+        {
+            var product = await _productService.GetById(model.Id.Value, include: false, tracking: false);
+            if (product != null)
+                await Update(model);
+        }
 
         var entity = model.ToEntity(_mapper) as DO.Product;
 
@@ -53,7 +56,7 @@ public class ProductApplicationService(
 
     public async Task<DTO.Product> Update(MSG.Product model)
     {
-        var product = await _productService.GetById(model.Id, include: false, tracking: true);
+        var product = await _productService.GetById(model.Id.Value, include: false, tracking: true);
         if (product == null)
             await Insert(model);
 

@@ -12,7 +12,9 @@ public class ProductMapper : Profile
         CreateMap<DO.Product, MSG.Product>()
             .ReverseMap()
             .ConstructUsing(src => new DO.Product())
-            .ForMember(dest => dest.Type, opt => opt.Ignore());
+            .ForMember(dest => dest.Type, opt => opt.Ignore())
+            .ForMember(dest => dest.CreatedAt, opt => opt.Ignore())
+            .ForMember(dest => dest.RemovedAt, opt => opt.Ignore());
 
         CreateMap<DO.Product, DTO.Product>()
             .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
