@@ -2,6 +2,8 @@ using AutoMapper;
 using MSG = Fiap.Hackatoon.Product.Consumer.Application.DataTransferObjects.MessageBrokers;
 using DO = Fiap.Hackatoon.Product.Consumer.Domain.Entities;
 using DTO = Fiap.Hackatoon.Product.Consumer.Application.DataTransferObjects;
+using VIEW = Fiap.Hackatoon.Product.Consumer.Domain.Views.ElasticSearch;
+using DTOE = Fiap.Hackatoon.Product.Consumer.Application.DataTransferObjects.ElasticSearch;
 
 namespace Fiap.Hackatoon.Product.Consumer.Application.Mappings;
 
@@ -30,5 +32,21 @@ public class ProductMapper : Profile
             .ReverseMap()
             .ConstructUsing(src => new DO.Product())
             .ForMember(dest => dest.Type, opt => opt.Ignore());
+
+        CreateMap<DO.Product, VIEW.ProductByType>()
+            .ForMember(dest => dest.TypeId, opt => opt.MapFrom(src => src.Type.Id))
+            .ForMember(dest => dest.TypeCode, opt => opt.MapFrom(src => src.Type.Code))
+            .ForMember(dest => dest.TypeName, opt => opt.MapFrom(src => src.Type.Name))
+            .ForMember(dest => dest.TypeDescription, opt => opt.MapFrom(src => src.Type.Description));
+
+        CreateMap<VIEW.ProductByType, DTOE.ProductByType>();
+        CreateMap<DTOE.ProductByType, DTO.Product>()
+            .ForMember(dest => dest.Id, opt =>
+            {
+                opt.Condition(src => src.Id.HasValue == false || src.Id.Value == default);
+                opt.UseDestinationValue();
+            })
+            .ForMember(dest => dest.TypeId, opt => opt.MapFrom(src => src.TypeId))
+            .ReverseMap();
     }
 }

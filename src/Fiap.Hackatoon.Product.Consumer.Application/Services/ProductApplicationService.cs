@@ -6,15 +6,20 @@ using Fiap.Hackatoon.Product.Consumer.Domain.Interfaces;
 using MSG = Fiap.Hackatoon.Product.Consumer.Application.DataTransferObjects.MessageBrokers;
 using DTO = Fiap.Hackatoon.Product.Consumer.Application.DataTransferObjects;
 using DO = Fiap.Hackatoon.Product.Consumer.Domain.Entities;
+using Fiap.Hackatoon.Product.Consumer.Domain.Interfaces.ElasticSearch;
+using DTOE = Fiap.Hackatoon.Product.Consumer.Application.DataTransferObjects.ElasticSearch;
+using VWE = Fiap.Hackatoon.Product.Consumer.Domain.Views.ElasticSearch;
 
 namespace Fiap.Hackatoon.Product.Consumer.Application.Services;
 
 public class ProductApplicationService(
     IProductService productService,
-    IMapper mapper) : IProductApplicationService
+    IMapper mapper,
+    IProductElasticSearchService productElasticSearchService) : IProductApplicationService
 {
     private readonly IProductService _productService = productService;
     private readonly IMapper _mapper = mapper;
+    private readonly IProductElasticSearchService _productElasticSearchService = productElasticSearchService;
 
     public async Task Consumer(string message, string rountingKey)
     {
@@ -49,7 +54,13 @@ public class ProductApplicationService(
         var entity = model.ToEntity(_mapper) as DO.Product;
 
         var result = await _productService.Add(entity);
-        return _mapper.Map<DTO.Product>(result);
+
+        var productDTO = _mapper.Map<DTO.Product>(result);
+        var productElastic= _mapper.Map<VWE.ProductByType>(productDTO);
+
+        await _productElasticSearchService.Create(productElastic, "products");
+
+        return productDTO;
     }
 
     public async Task<DTO.Product> Update(MSG.Product model)
@@ -61,12 +72,19 @@ public class ProductApplicationService(
         _mapper.Map(model, product);
 
         var result = await _productService.Update(product);
-        return _mapper.Map<DTO.Product>(result);
+
+        var productDTO = _mapper.Map<DTO.Product>(result);
+        var productElastic= _mapper.Map<VWE.ProductByType>(productDTO);
+
+        await _productElasticSearchService.Update(productElastic, "products");
+
+        return productDTO;
     }
 
     public async Task Remove(Guid id)
     {
         await _productService.Remove(id);
+        await _productElasticSearchService.Remove(id, "products");  
     }
 
     public void Dispose()

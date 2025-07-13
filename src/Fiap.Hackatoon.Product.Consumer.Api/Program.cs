@@ -20,6 +20,8 @@ using Fiap.Hackatoon.Product.Consumer.Application.DataTransferObjects;
 using Fiap.Hackatoon.Product.Consumer.Domain.Settings;
 using Prometheus;
 using Fiap.Hackatoon.Product.Consumer.Api.Robots.RabbitMQ;
+using Fiap.Hackatoon.Product.Consumer.Domain.Interfaces.ElasticSearch;
+using Fiap.Hackatoon.Product.Consumer.Infrastructure.ElasticSearch.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 var env = builder.Environment;
@@ -161,6 +163,17 @@ builder.Services.AddScoped<IProductApplicationService, ProductApplicationService
 #region RabbitMQConsumers
 
 builder.Services.AddHostedService<ProductConsumerService>();
+
+#endregion
+
+#region ElasticSearch
+
+builder.Services.Configure<ElasticSearchSettings>(
+    builder.Configuration.GetSection("ElasticSearch")
+);
+
+builder.Services.AddScoped(typeof(IElasticSearchService<>), typeof(ElasticSearchService<>));
+builder.Services.AddScoped<IProductElasticSearchService, ProductElasticSearchService>();
 
 #endregion
 
