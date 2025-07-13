@@ -23,6 +23,6 @@ spec:
     app: product-consumer-api
   ports:
     - protocol: TCP
-      port: 5002           # Porta do servi�o
+      port: 5089           # Porta do servi�o
       targetPort: 8089   # Porta do container
   type: LoadBalancer
