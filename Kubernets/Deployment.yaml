@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: product-api-deployment  # Nome do Deployment
+  name: product-consumer-deployment  # Nome do Deployment
   annotations:
     autor: Gabriel Domingos
 spec:  
@@ -61,12 +61,12 @@ spec:
         - name: RabbitMq__HostName
           valueFrom:
             configMapKeyRef: 
-              name: product-api-configmap
+              name: product-consumer-configmap
               key: "Server"
         - name: RabbitMq__Port
           valueFrom:
             configMapKeyRef: 
-              name: product-api-configmap
+              name: product-consumer-configmap
               key: "Port"
         
        
