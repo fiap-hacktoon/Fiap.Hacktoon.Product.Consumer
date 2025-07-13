@@ -60,4 +60,4 @@ jobs:
 
       - name: Deploy to AKS
         run: bash deploy.sh
-        working-directory: .Kubernets/
+        working-directory: ./Kubernets/

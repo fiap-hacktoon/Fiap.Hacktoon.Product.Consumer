@@ -34,6 +34,7 @@ namespace Fiap.Hackatoon.Product.Consumer.Tests.Integration
                 cfg.AddProfile<ProductMapper>();
             });
             _mapper = config.CreateMapper();
+            
             var mockElasticService = new Mock<IProductElasticSearchService>();
             _productService = new ProductService(new ProductRepository(_context));
             _application = new ProductApplicationService(_productService, _mapper, mockElasticService.Object);
