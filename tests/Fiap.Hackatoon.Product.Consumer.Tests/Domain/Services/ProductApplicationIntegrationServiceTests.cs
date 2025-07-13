@@ -11,6 +11,8 @@ using Fiap.Hackatoon.Product.Consumer.Application.Services;
 using Fiap.Hackatoon.Product.Consumer.Application.Mappings;
 using Fiap.Hackatoon.Product.Consumer.Tests.Shared.Fixtures.DataTransferObjects;
 using Fiap.Hackatoon.Product.Consumer.Tests.Shared.Fixtures;
+using Moq;
+using Fiap.Hackatoon.Product.Consumer.Domain.Interfaces.ElasticSearch;
 
 namespace Fiap.Hackatoon.Product.Consumer.Tests.Integration
 {
@@ -32,9 +34,9 @@ namespace Fiap.Hackatoon.Product.Consumer.Tests.Integration
                 cfg.AddProfile<ProductMapper>();
             });
             _mapper = config.CreateMapper();
-            
+            var mockElasticService = new Mock<IProductElasticSearchService>();
             _productService = new ProductService(new ProductRepository(_context));
-            _application = new ProductApplicationService(_productService, _mapper);
+            _application = new ProductApplicationService(_productService, _mapper, mockElasticService.Object);
         }
 
         public async Task DisposeAsync()
