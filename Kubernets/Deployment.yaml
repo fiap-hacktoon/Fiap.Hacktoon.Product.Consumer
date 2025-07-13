@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: product-api-deployment  # Nome do Deployment
   annotations:
-    autor: Gabriel Loureiro
+    autor: Gabriel Domingos
 spec:  
   selector:
     matchLabels:
@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: product-consumet-api
-        image: rmahlow/fiaphackatoonproductapi:7.0
+        image: rmahlow/fiaphackatoonproductconsumer:latest
         ports:
         - containerPort: 8089
         resources:
