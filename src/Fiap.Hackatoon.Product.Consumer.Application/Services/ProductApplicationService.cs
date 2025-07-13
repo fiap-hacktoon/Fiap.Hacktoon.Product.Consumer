@@ -7,7 +7,6 @@ using MSG = Fiap.Hackatoon.Product.Consumer.Application.DataTransferObjects.Mess
 using DTO = Fiap.Hackatoon.Product.Consumer.Application.DataTransferObjects;
 using DO = Fiap.Hackatoon.Product.Consumer.Domain.Entities;
 using Fiap.Hackatoon.Product.Consumer.Domain.Interfaces.ElasticSearch;
-using DTOE = Fiap.Hackatoon.Product.Consumer.Application.DataTransferObjects.ElasticSearch;
 using VWE = Fiap.Hackatoon.Product.Consumer.Domain.Views.ElasticSearch;
 
 namespace Fiap.Hackatoon.Product.Consumer.Application.Services;
@@ -54,13 +53,12 @@ public class ProductApplicationService(
         var entity = model.ToEntity(_mapper) as DO.Product;
 
         var result = await _productService.Add(entity);
+        var productEntity = await _productService.GetById(result.Id, include: true, tracking: false);
 
-        var productDTO = _mapper.Map<DTO.Product>(result);
-        var productElastic= _mapper.Map<VWE.ProductByType>(productDTO);
-
+        var productElastic= _mapper.Map<VWE.ProductByType>(productEntity);
         await _productElasticSearchService.Create(productElastic, "products");
 
-        return productDTO;
+        return _mapper.Map<DTO.Product>(result);;
     }
 
     public async Task<DTO.Product> Update(MSG.Product model)
@@ -72,13 +70,13 @@ public class ProductApplicationService(
         _mapper.Map(model, product);
 
         var result = await _productService.Update(product);
-
-        var productDTO = _mapper.Map<DTO.Product>(result);
-        var productElastic= _mapper.Map<VWE.ProductByType>(productDTO);
+        
+        var productEntity = await _productService.GetById(result.Id, include: true, tracking: false);
+        var productElastic= _mapper.Map<VWE.ProductByType>(productEntity);
 
         await _productElasticSearchService.Update(productElastic, "products");
 
-        return productDTO;
+        return _mapper.Map<DTO.Product>(result);;
     }
 
     public async Task Remove(Guid id)

@@ -10,6 +10,9 @@ public class ProductRepository(ApplicationDBContext context) : BaseRepository<DO
     {
         var query = BaseQuery(tracking);
 
+        if (include)
+            query = query.Include(x => x.Type);
+
         return await query.FirstOrDefaultAsync(x => x.Id == id);
     }
 }
