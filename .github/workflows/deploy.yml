@@ -35,7 +35,7 @@ jobs:
         uses: docker/build-push-action@v5.0.0
         with:
           context: .       
-          file: ./Fiap.Hacktoon.Product.Consumer/Dockerfile
+          file: ./Dockerfile
           tags: 'rmahlow/fiaphackatoonproductconsumer:6.0' # Atualizado para a versão 3.0
           push: true
 
@@ -56,8 +56,8 @@ jobs:
           version: 1.21.0
 
       - name: Make script executable
-        run: chmod +x ./Fiap.Hacktoon.Product.Consumer/Kubernets/deploy.sh
+        run: chmod +x ./Kubernets/deploy.sh
 
       - name: Deploy to AKS
         run: bash deploy.sh
-        working-directory: ./Fiap.Hacktoon.Product.Consumer/Kubernets/
+        working-directory: .Kubernets/
