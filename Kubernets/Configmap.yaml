@@ -5,7 +5,6 @@ metadata:
 data:
   Server: "rabbitmq-clusterip"
   Port: "5672"
-  SQLConnection: "Data Source=mssql-clusterip;User ID=sa;Password=numsey#2021;Initial Catalog=FastTecFoods;Connect Timeout=30;Encrypt=False;Trust Server Certificate=True;Application Intent=ReadWrite;Multi Subnet Failover=False"
   QueueNameClienteCreate: "ClienteCreate"
   QueueNameClienteUpdate: "ClienteUpdate"
   QueueNameEmployeeCreate: "EmployeeCreate"
