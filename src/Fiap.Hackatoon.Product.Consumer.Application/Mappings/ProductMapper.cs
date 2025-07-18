@@ -37,7 +37,8 @@ public class ProductMapper : Profile
             .ForMember(dest => dest.TypeId, opt => opt.MapFrom(src => src.Type.Id))
             .ForMember(dest => dest.TypeCode, opt => opt.MapFrom(src => src.Type.Code))
             .ForMember(dest => dest.TypeName, opt => opt.MapFrom(src => src.Type.Name))
-            .ForMember(dest => dest.TypeDescription, opt => opt.MapFrom(src => src.Type.Description));
+            .ForMember(dest => dest.TypeDescription, opt => opt.MapFrom(src => src.Type.Description))
+            .ForMember(dest => dest.ProductName, opt => opt.MapFrom(src => src.Name));
 
         CreateMap<VIEW.ProductByType, DTOE.ProductByType>()
             .ReverseMap();
