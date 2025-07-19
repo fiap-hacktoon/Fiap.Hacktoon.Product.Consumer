@@ -39,7 +39,8 @@ if (string.IsNullOrEmpty(jwtKeyConfig))
     throw new InvalidOperationException("Token:Key configuration is missing or empty.");
 
 builder.Services.Configure<ConsumerSettings>(builder.Configuration);
-builder.WebHost.UseUrls("https://0.0.0.0:5056");
+builder.Services.AddHealthChecks().ForwardToPrometheus();
+// builder.WebHost.UseUrls("https://0.0.0.0:5056");
 
 builder.Services.AddAuthentication(o =>
 {
@@ -190,6 +191,7 @@ using (var scope = app.Services.CreateScope())
     context.Database.Migrate();
 }
 
+app.UseHealthChecks("/health");
 app.UseHttpMetrics();
 app.MapMetrics();
 
