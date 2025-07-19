@@ -1,28 +1,46 @@
-
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: product-consumer-api-clusterip
+  labels:
+    app: product-consumer-api
+spec:
+  selector:
+    app: product-consumer-api
+  ports:
+    - protocol: TCP
+      port: 80           # Porta interna do cluster para acesso (ClusterIP)
+      targetPort: 8089   # Porta do container
+  type: ClusterIP
+---
 apiVersion: v1
 kind: Service
 metadata:
   name: product-consumer-api-nodeport
+  labels:
+    app: product-consumer-api
 spec:
   selector:
     app: product-consumer-api
   ports:
     - protocol: TCP
-      port: 80           # Porta acessada externamente
+      port: 80           # Porta acessada externamente via nó
       targetPort: 8089   # Porta do container
-      nodePort: 30089    # Porta exposta no n� (opcional)
+      nodePort: 30089    # Porta exposta no nó (opcional)
   type: NodePort
 ---
-# Service LoadBalancer: Acesso externo gerenciado (em nuvem)
 apiVersion: v1
 kind: Service
 metadata:
   name: product-consumer-api-lb
+  labels:
+    app: product-consumer-api
 spec:
   selector:
     app: product-consumer-api
   ports:
     - protocol: TCP
-      port: 5089           # Porta do servi�o
-      targetPort: 8089   # Porta do container
+      port: 5089           # Porta do serviço exposta pelo LoadBalancer
+      targetPort: 8089     # Porta do container
   type: LoadBalancer

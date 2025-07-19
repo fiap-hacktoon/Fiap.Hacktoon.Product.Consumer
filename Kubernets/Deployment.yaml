@@ -1,10 +1,10 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: product-consumer-deployment  # Nome do Deployment
+  name: product-consumer-deployment
   annotations:
-    autor: Gabriel Domingos
-spec:  
+    author: Gabriel Domingos
+spec:
   selector:
     matchLabels:
       app: product-consumer-api
@@ -14,8 +14,9 @@ spec:
         app: product-consumer-api
     spec:
       containers:
-      - name: product-consumet-api
-        image: rmahlow/fiaphackatoonproductconsumer:latest
+      - name: product-consumer-api
+        image: maxcedro/contactsproductconsumer:latest
+        imagePullPolicy: Always
         ports:
         - containerPort: 8089
         resources:
@@ -68,5 +69,3 @@ spec:
             configMapKeyRef: 
               name: product-consumer-configmap
               key: "Port"
-        
-       
